@@ -16,12 +16,16 @@ jobs:
       - uses: actions/checkout@v3
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag rv32i_cosim:$(date +%s)
+      - name: Run Docker
+        run: docker run --rm -it rv32i_cosim:latest
+      - name: Test software
+        run: sh prereqs.sh && sh build.sh && sh test.sh
 
-  build-project:
+#   build-project:
 
-    runs-on: ubuntu-latest
-    container: rv32i_cosim:latest
-    steps:
-      - run: sh prereqs.sh
-      - run: sh build.sh
-      - run: sh test.sh
+#     runs-on: ubuntu-latest
+#     container: rv32i_cosim:latest
+#     steps:
+#       - run: sh prereqs.sh
+#       - run: sh build.sh
+#       - run: sh test.sh
