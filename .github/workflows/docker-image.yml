@@ -8,11 +8,20 @@ on:
 
 jobs:
 
-  build:
+  build-docker:
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag rv32i_cosim:$(date +%s)
+      - uses: actions/checkout@v3
+      - name: Build the Docker image
+        run: docker build . --file Dockerfile --tag rv32i_cosim:$(date +%s)
+
+  build-project:
+
+    runs-on: ubuntu-latest
+    container: rv32i_cosim:latest
+    steps:
+      - run: sh prereqs.sh
+      - run: sh build.sh
+      - run: sh test.sh
