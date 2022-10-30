@@ -17,9 +17,9 @@ jobs:
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag rv32i_cosim:$(date +%s)
       - name: Run Docker
-        run: docker run --rm -it rv32i_cosim:latest
-      - name: Test software
-        run: sh prereqs.sh && sh build.sh && sh test.sh
+        run: docker run rv32i_cosim:latest sh prereqs.sh && sh build.sh && sh test.sh
+#      - name: Test software
+#        run: sh prereqs.sh && sh build.sh && sh test.sh
 
 #   build-project:
 
