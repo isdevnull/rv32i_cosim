@@ -7,25 +7,39 @@ on:
     branches: [ "main" ]
 
 jobs:
-
-  build-docker:
-
-    runs-on: ubuntu-latest
-
+  build-with-docker:
+    name: Build with Docker
+    runs-on: ubuntu:latest
     steps:
       - uses: actions/checkout@v3
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag rv32i_cosim:$(date +%s)
-      - name: Run Docker
-        run: docker run rv32i_cosim:latest sh prereqs.sh && sh build.sh && sh test.sh
-#      - name: Test software
-#        run: sh prereqs.sh && sh build.sh && sh test.sh
+      - uses: docker/setup-buildx-action@v1
+      - uses: docker/build-push-action@v2
+        with:
+          tag: rv32i_cosim:$(date +%s)
+  
+  run-docker:
+    runs-on: ubuntu:latest
+    steps:
+      - run: docker run rv32i_cosim:latest
 
-#   build-project:
+#   build-docker:
 
 #     runs-on: ubuntu-latest
-#     container: rv32i_cosim:latest
+
 #     steps:
-#       - run: sh prereqs.sh
-#       - run: sh build.sh
-#       - run: sh test.sh
+#       - uses: actions/checkout@v3
+#       - name: Build the Docker image
+#         run: docker build . --file Dockerfile --tag rv32i_cosim:$(date +%s)
+#       - name: Run Docker
+#         run: docker run rv32i_cosim:latest sh prereqs.sh && sh build.sh && sh test.sh
+# #      - name: Test software
+# #        run: sh prereqs.sh && sh build.sh && sh test.sh
+
+# #   build-project:
+
+# #     runs-on: ubuntu-latest
+# #     container: rv32i_cosim:latest
+# #     steps:
+# #       - run: sh prereqs.sh
+# #       - run: sh build.sh
+# #       - run: sh test.sh
